@@ -1,0 +1,24 @@
+﻿
+@model IASHandyMan.Models.Employee
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Login", "Login", FormMethod.Post))
+{
+    <div class="jumbotron">
+        <h1>Login</h1>
+        <br />
+        @Html.TextBoxFor(x => x.Employeeid, new { @class = "form-control", autofocus = "autofocus", placeholder = "Usuario" })
+        @Html.ValidationMessageFor(x => x.Employeeid, null, new { @class = "text-danger" })
+        <br />
+        @Html.TextBoxFor(x => x.pass, new { @class = "form-control", autofocus = "autofocus", placeholder = "Contraseña", Type = "password" })
+        @Html.ValidationMessageFor(x => x.pass, null, new { @class = "text-danger" })
+        <br />
+        <button class="btn btn-danger" type="submit">
+            Iniciar sesión
+        </button>
+    </div>
+}
