@@ -1,0 +1,43 @@
+﻿@model ALPHA.Models.Request.Documents
+
+
+@{
+    ViewBag.Title = "Review";
+    Layout = "~/Views/Shared/_Default.cshtml";
+}
+
+<h2>Documentos</h2>
+<div class="jumbotron">
+    <br />
+    @if ((Session["user"] as ALPHA.Models.Request.Employee).idRol != 3)
+    {
+        <input id="user" name="nameUser" type="text" value="" placeholder="Ingrese el Usaurio para filtrar los radicados"/>
+    }
+    <br />
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Nombre Documento</th>
+                <th>Consecutivo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (@Model.lstDocument != null)
+            {
+                foreach (var item in @Model.lstDocument)
+                {
+                    <tr>
+                        @*<th scope="row">@item.id</th>*@
+                        <td>@item.nameFile</td>
+                        <td>@item.consecutivo</td>
+                        <td>
+                            <a data-value="@item.id"
+                               href="javascript:void(0)" class="btnEdit">Edit</a>
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+</div>

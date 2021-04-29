@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace IASHandyMan.Login {
+namespace ALPHA.Login {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -35,12 +35,12 @@ namespace IASHandyMan.Login {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IServiceRegisterTimeChannel : IASHandyMan.Login.IServiceRegisterTime, System.ServiceModel.IClientChannel {
+    public interface IServiceRegisterTimeChannel : ALPHA.Login.IServiceRegisterTime, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class ServiceRegisterTimeClient : System.ServiceModel.ClientBase<IASHandyMan.Login.IServiceRegisterTime>, IASHandyMan.Login.IServiceRegisterTime {
+    public partial class ServiceRegisterTimeClient : System.ServiceModel.ClientBase<ALPHA.Login.IServiceRegisterTime>, ALPHA.Login.IServiceRegisterTime {
         
         public ServiceRegisterTimeClient() {
         }

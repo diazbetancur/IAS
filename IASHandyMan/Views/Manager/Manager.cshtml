@@ -1,0 +1,53 @@
+﻿@model ALPHA.Models.Request.Document
+
+@{
+    ViewBag.Title = "Manager";
+    Layout = "~/Views/Shared/_Default.cshtml";
+}
+
+
+@using (Html.BeginForm("Manager", "Manager", FormMethod.Post, new
+{
+    enctype = "multipart/form-data"
+}))
+{
+<div class="jumbotron">
+    <h3>Registro Documentación</h3>
+    <br />
+    @Html.TextBoxFor(x => x.nameFile, new { @class = "form-control", autofocus = "autofocus", placeholder = "Nombre Archivo" })
+    @Html.ValidationMessageFor(x => x.nameFile, null, new { @class = "text-danger" })
+    <br />
+    <input type="file" name="documentFile" required />
+    <br />
+    <h4>Comunicación</h4>
+    @Html.Label("Externa") @Html.RadioButtonFor(x => x.typeDocument, "1")
+    @Html.Label("Inerna") @Html.RadioButtonFor(x => x.typeDocument, "0")
+    @Html.ValidationMessageFor(x => x.typeDocument, null, new { @class = "text-danger" })
+    <br />
+    @Html.TextBoxFor(x => x.idReceiver, new { @class = "form-control", autofocus = "autofocus", placeholder = "Identificación de quien Recibe" })
+    @Html.ValidationMessageFor(x => x.idReceiver, null, new { @class = "text-danger" })
+    <br />
+    @Html.TextBoxFor(x => x.idSender, new { @class = "form-control", autofocus = "autofocus", placeholder = "Identificación de quien Envia" })
+    @Html.ValidationMessageFor(x => x.idSender, null, new { @class = "text-danger" })
+    <br />
+    <button class="btn btn-danger" type="submit">
+        Radicar Documento
+    </button>
+</div>
+    <p>@ViewBag.ErrorMessage</p>
+}
+
+<script>
+
+    //To get selected value an text of dropdownlist
+    function SelectedValue(ddlObject)
+    {
+        //Selected value of dropdownlist
+        var selectedValue = ddlObject.value;
+        //Selected text of dropdownlist
+        var selectedText = ddlObject.options[ddlObject.selectedIndex].innerHTML;
+
+        //alert popup with detail of seleceted value and text
+        alert(" Selected Value: " + selectedValue+" -- "+"Selected Text: " + selectedText ) ;
+    }
+</script>  

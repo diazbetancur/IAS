@@ -1,0 +1,482 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DB_ALPHAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblDocuments">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="100" />
+          <Property Name="realName" Type="varchar" MaxLength="100" />
+          <Property Name="fileExt" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="tblLogin">
+          <Key>
+            <PropertyRef Name="userName" />
+          </Key>
+          <Property Name="userName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="pwd" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="idPerson" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblPerson">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="lastName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="mail" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="idRol" Type="int" Nullable="false" />
+          <Property Name="active" Type="bit" Nullable="false" />
+          <Property Name="idNumber" Type="int" />
+        </EntityType>
+        <EntityType Name="tblRadication">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="type" Type="bit" Nullable="false" />
+          <Property Name="idSender" Type="int" Nullable="false" />
+          <Property Name="idReceiver" Type="int" Nullable="false" />
+          <Property Name="idRadication" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="idDocument" Type="int" Nullable="false" />
+          <Property Name="dateRadication" Type="date" />
+        </EntityType>
+        <EntityType Name="tblRoles">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="permisionDescription" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_Login_tblPerson">
+          <End Role="tblPerson" Type="Self.tblPerson" Multiplicity="1" />
+          <End Role="tblLogin" Type="Self.tblLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblPerson">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblLogin">
+              <PropertyRef Name="idPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_tblRoles">
+          <End Role="tblRoles" Type="Self.tblRoles" Multiplicity="1" />
+          <End Role="tblPerson" Type="Self.tblPerson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRoles">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblPerson">
+              <PropertyRef Name="idRol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Receiver">
+          <End Role="tblPerson" Type="Self.tblPerson" Multiplicity="1" />
+          <End Role="tblRadication" Type="Self.tblRadication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblPerson">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblRadication">
+              <PropertyRef Name="idReceiver" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sender">
+          <End Role="tblPerson" Type="Self.tblPerson" Multiplicity="1" />
+          <End Role="tblRadication" Type="Self.tblRadication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblPerson">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblRadication">
+              <PropertyRef Name="idSender" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblRadication_tblDocuments">
+          <End Role="tblDocuments" Type="Self.tblDocuments" Multiplicity="1" />
+          <End Role="tblRadication" Type="Self.tblRadication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDocuments">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblRadication">
+              <PropertyRef Name="idDocument" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="SP_GetDocument" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="user" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="SP_GetRoles" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SP_InsertDocument" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdSender" Type="int" Mode="In" />
+          <Parameter Name="idReceiver" Type="int" Mode="In" />
+          <Parameter Name="Type" Type="bit" Mode="In" />
+          <Parameter Name="name" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="realName" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="fileExt" Type="varbinary(max)" Mode="In" />
+          <Parameter Name="result" Type="nvarchar(max)" Mode="InOut" />
+        </Function>
+        <Function Name="SP_InsertPerson" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="lastName" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="mail" Type="nvarchar" Mode="In" />
+          <Parameter Name="idRol" Type="int" Mode="In" />
+          <Parameter Name="user" Type="nvarchar" Mode="In" />
+          <Parameter Name="pwd" Type="nvarchar" Mode="In" />
+          <Parameter Name="result" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="SP_Login" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="User" Type="nvarchar" Mode="In" />
+          <Parameter Name="pwd" Type="nvarchar" Mode="In" />
+          <Parameter Name="result" Type="nvarchar" Mode="InOut" />
+        </Function>
+        <Function Name="SP_SenderExist" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idSender" Type="int" Mode="In" />
+          <Parameter Name="result" Type="nvarchar(max)" Mode="InOut" />
+        </Function>
+        <EntityContainer Name="DB_ALPHAModelStoreContainer">
+          <EntitySet Name="tblDocuments" EntityType="Self.tblDocuments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblLogin" EntityType="Self.tblLogin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblPerson" EntityType="Self.tblPerson" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblRadication" EntityType="Self.tblRadication" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblRoles" EntityType="Self.tblRoles" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Login_tblPerson" Association="Self.FK_Login_tblPerson">
+            <End Role="tblPerson" EntitySet="tblPerson" />
+            <End Role="tblLogin" EntitySet="tblLogin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_tblRoles" Association="Self.FK_Person_tblRoles">
+            <End Role="tblRoles" EntitySet="tblRoles" />
+            <End Role="tblPerson" EntitySet="tblPerson" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Receiver" Association="Self.FK_Receiver">
+            <End Role="tblPerson" EntitySet="tblPerson" />
+            <End Role="tblRadication" EntitySet="tblRadication" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sender" Association="Self.FK_Sender">
+            <End Role="tblPerson" EntitySet="tblPerson" />
+            <End Role="tblRadication" EntitySet="tblRadication" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblRadication_tblDocuments" Association="Self.FK_tblRadication_tblDocuments">
+            <End Role="tblDocuments" EntitySet="tblDocuments" />
+            <End Role="tblRadication" EntitySet="tblRadication" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DB_ALPHAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblDocuments">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="realName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="fileExt" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="tblRadication" Relationship="Self.FK_tblRadication_tblDocuments" FromRole="tblDocuments" ToRole="tblRadication" />
+        </EntityType>
+        <EntityType Name="tblLogin">
+          <Key>
+            <PropertyRef Name="userName" />
+          </Key>
+          <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="pwd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="idPerson" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblPerson" Relationship="Self.FK_Login_tblPerson" FromRole="tblLogin" ToRole="tblPerson" />
+        </EntityType>
+        <EntityType Name="tblPerson">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="lastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="mail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="idRol" Type="Int32" Nullable="false" />
+          <Property Name="active" Type="Boolean" Nullable="false" />
+          <Property Name="idNumber" Type="Int32" />
+          <NavigationProperty Name="tblLogin" Relationship="Self.FK_Login_tblPerson" FromRole="tblPerson" ToRole="tblLogin" />
+          <NavigationProperty Name="tblRoles" Relationship="Self.FK_Person_tblRoles" FromRole="tblPerson" ToRole="tblRoles" />
+          <NavigationProperty Name="tblRadication" Relationship="Self.FK_Receiver" FromRole="tblPerson" ToRole="tblRadication" />
+          <NavigationProperty Name="tblRadication1" Relationship="Self.FK_Sender" FromRole="tblPerson" ToRole="tblRadication" />
+        </EntityType>
+        <EntityType Name="tblRadication">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="type" Type="Boolean" Nullable="false" />
+          <Property Name="idSender" Type="Int32" Nullable="false" />
+          <Property Name="idReceiver" Type="Int32" Nullable="false" />
+          <Property Name="idRadication" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="idDocument" Type="Int32" Nullable="false" />
+          <Property Name="dateRadication" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="tblDocuments" Relationship="Self.FK_tblRadication_tblDocuments" FromRole="tblRadication" ToRole="tblDocuments" />
+          <NavigationProperty Name="tblPerson" Relationship="Self.FK_Receiver" FromRole="tblRadication" ToRole="tblPerson" />
+          <NavigationProperty Name="tblPerson1" Relationship="Self.FK_Sender" FromRole="tblRadication" ToRole="tblPerson" />
+        </EntityType>
+        <EntityType Name="tblRoles">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="permisionDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblPerson" Relationship="Self.FK_Person_tblRoles" FromRole="tblRoles" ToRole="tblPerson" />
+        </EntityType>
+        <Association Name="FK_tblRadication_tblDocuments">
+          <End Role="tblDocuments" Type="Self.tblDocuments" Multiplicity="1" />
+          <End Role="tblRadication" Type="Self.tblRadication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDocuments">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblRadication">
+              <PropertyRef Name="idDocument" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Login_tblPerson">
+          <End Role="tblPerson" Type="Self.tblPerson" Multiplicity="1" />
+          <End Role="tblLogin" Type="Self.tblLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblPerson">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblLogin">
+              <PropertyRef Name="idPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_tblRoles">
+          <End Role="tblRoles" Type="Self.tblRoles" Multiplicity="1" />
+          <End Role="tblPerson" Type="Self.tblPerson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRoles">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblPerson">
+              <PropertyRef Name="idRol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Receiver">
+          <End Role="tblPerson" Type="Self.tblPerson" Multiplicity="1" />
+          <End Role="tblRadication" Type="Self.tblRadication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblPerson">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblRadication">
+              <PropertyRef Name="idReceiver" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sender">
+          <End Role="tblPerson" Type="Self.tblPerson" Multiplicity="1" />
+          <End Role="tblRadication" Type="Self.tblRadication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblPerson">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblRadication">
+              <PropertyRef Name="idSender" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DB_ALPHAEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblDocuments" EntityType="Self.tblDocuments" />
+          <EntitySet Name="tblLogin" EntityType="Self.tblLogin" />
+          <EntitySet Name="tblPerson" EntityType="Self.tblPerson" />
+          <EntitySet Name="tblRadication" EntityType="Self.tblRadication" />
+          <EntitySet Name="tblRoles" EntityType="Self.tblRoles" />
+          <AssociationSet Name="FK_tblRadication_tblDocuments" Association="Self.FK_tblRadication_tblDocuments">
+            <End Role="tblDocuments" EntitySet="tblDocuments" />
+            <End Role="tblRadication" EntitySet="tblRadication" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Login_tblPerson" Association="Self.FK_Login_tblPerson">
+            <End Role="tblPerson" EntitySet="tblPerson" />
+            <End Role="tblLogin" EntitySet="tblLogin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_tblRoles" Association="Self.FK_Person_tblRoles">
+            <End Role="tblRoles" EntitySet="tblRoles" />
+            <End Role="tblPerson" EntitySet="tblPerson" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Receiver" Association="Self.FK_Receiver">
+            <End Role="tblPerson" EntitySet="tblPerson" />
+            <End Role="tblRadication" EntitySet="tblRadication" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sender" Association="Self.FK_Sender">
+            <End Role="tblPerson" EntitySet="tblPerson" />
+            <End Role="tblRadication" EntitySet="tblRadication" />
+          </AssociationSet>
+          <FunctionImport Name="SP_GetDocument" ReturnType="Collection(DB_ALPHAModel.SP_GetDocument_Result)">
+          <Parameter Name="user" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_InsertDocument">
+            <Parameter Name="IdSender" Mode="In" Type="Int32" />
+            <Parameter Name="idReceiver" Mode="In" Type="Int32" />
+            <Parameter Name="Type" Mode="In" Type="Boolean" />
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="realName" Mode="In" Type="String" />
+            <Parameter Name="fileExt" Mode="In" Type="Binary" />
+            <Parameter Name="result" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_InsertPerson">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="lastName" Mode="In" Type="String" />
+            <Parameter Name="mail" Mode="In" Type="String" />
+            <Parameter Name="idRol" Mode="In" Type="Int32" />
+            <Parameter Name="user" Mode="In" Type="String" />
+            <Parameter Name="pwd" Mode="In" Type="String" />
+            <Parameter Name="result" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Login">
+            <Parameter Name="User" Mode="In" Type="String" />
+            <Parameter Name="pwd" Mode="In" Type="String" />
+            <Parameter Name="result" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_SenderExist" ReturnType="Collection(DB_ALPHAModel.SP_SenderExist_Result)">
+            <Parameter Name="idSender" Mode="In" Type="Int32" />
+            <Parameter Name="result" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GetRoles" ReturnType="Collection(DB_ALPHAModel.SP_GetRoles_Result)" />
+        </EntityContainer>
+        <ComplexType Name="SP_GetDocument_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="idRadication" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="name" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="SP_SenderExist_Result">
+          <Property Type="String" Name="name" Nullable="false" />
+          <Property Type="String" Name="lastName" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SP_GetRoles_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="description" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="permisionDescription" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DB_ALPHAModelStoreContainer" CdmEntityContainer="DB_ALPHAEntities">
+          <EntitySetMapping Name="tblDocuments">
+            <EntityTypeMapping TypeName="DB_ALPHAModel.tblDocuments">
+              <MappingFragment StoreEntitySet="tblDocuments">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="realName" ColumnName="realName" />
+                <ScalarProperty Name="fileExt" ColumnName="fileExt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblLogin">
+            <EntityTypeMapping TypeName="DB_ALPHAModel.tblLogin">
+              <MappingFragment StoreEntitySet="tblLogin">
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="pwd" ColumnName="pwd" />
+                <ScalarProperty Name="idPerson" ColumnName="idPerson" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblPerson">
+            <EntityTypeMapping TypeName="DB_ALPHAModel.tblPerson">
+              <MappingFragment StoreEntitySet="tblPerson">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="mail" ColumnName="mail" />
+                <ScalarProperty Name="idRol" ColumnName="idRol" />
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="idNumber" ColumnName="idNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblRadication">
+            <EntityTypeMapping TypeName="DB_ALPHAModel.tblRadication">
+              <MappingFragment StoreEntitySet="tblRadication">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="idSender" ColumnName="idSender" />
+                <ScalarProperty Name="idReceiver" ColumnName="idReceiver" />
+                <ScalarProperty Name="idRadication" ColumnName="idRadication" />
+                <ScalarProperty Name="idDocument" ColumnName="idDocument" />
+                <ScalarProperty Name="dateRadication" ColumnName="dateRadication" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblRoles">
+            <EntityTypeMapping TypeName="DB_ALPHAModel.tblRoles">
+              <MappingFragment StoreEntitySet="tblRoles">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="permisionDescription" ColumnName="permisionDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_GetDocument" FunctionName="DB_ALPHAModel.Store.SP_GetDocument">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_ALPHAModel.SP_GetDocument_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idRadication" ColumnName="idRadication" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_InsertDocument" FunctionName="DB_ALPHAModel.Store.SP_InsertDocument" />
+          <FunctionImportMapping FunctionImportName="SP_InsertPerson" FunctionName="DB_ALPHAModel.Store.SP_InsertPerson" />
+          <FunctionImportMapping FunctionImportName="SP_Login" FunctionName="DB_ALPHAModel.Store.SP_Login" />
+          <FunctionImportMapping FunctionImportName="SP_SenderExist" FunctionName="DB_ALPHAModel.Store.SP_SenderExist">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_ALPHAModel.SP_SenderExist_Result">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GetRoles" FunctionName="DB_ALPHAModel.Store.SP_GetRoles">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_ALPHAModel.SP_GetRoles_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="permisionDescription" ColumnName="permisionDescription" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

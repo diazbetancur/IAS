@@ -1,0 +1,35 @@
+﻿@model ALPHA.Models.tblLogin
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Default.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tblLogin</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.pwd)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pwd)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblPerson.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblPerson.name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.userName }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

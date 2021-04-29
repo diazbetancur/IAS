@@ -1,0 +1,65 @@
+﻿@model ALPHA.Models.tblPerson
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Default.cshtml";
+}
+
+<div>
+    <h4>tblPerson</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.lastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.lastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.mail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.mail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.active)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.active)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.idNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.idNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblRoles.description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblRoles.description)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

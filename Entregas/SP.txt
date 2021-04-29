@@ -1,0 +1,42 @@
+CREATE PROCEDURE [dbo].[SP_InsertDocument] 
+	@IdSender int,
+	@idReceiver int,
+	@Type bit,
+	@name nvarchar(max),
+	@realName nvarchar(max),
+	@fileExt varbinary(max),
+	@result nvarchar(max) out
+AS
+BEGIN
+	BEGIN TRY  
+	DECLARE @idDocument nvarchar(max)
+			IF NOT EXISTS (SELECT * FROM dbo.tblPerson WHERE idNumber = @IdSender AND idRol = 4)
+			BEGIN
+				SET @result = '0|No existe la identificacion del remitente'
+			END
+			ELSE IF NOT EXISTS (SELECT * FROM dbo.tblPerson WHERE idNumber = @IdSender AND idRol = 3)
+			BEGIN
+				SET @result = '0|No existe la identificacion del receptor'
+			END
+			ELSE
+			BEGIN
+				INSERT INTO dbo.tblDocuments VALUES (@name, @realName, @fileExt)
+				SET @idDocument = (SELECT TOP(1) idRadication FROM dbo.tblRadication WHERE [type] = @Type order by id desc)
+				IF(@Type = 1)
+				BEGIN
+					SET @idDocument = CONCAT('CE', (CONVERT( int , (SUBSTRING(@idDocument,3, LEN(@idDocument) ))) + 1))
+				END
+				ELSE
+				BEGIN
+					SET @idDocument = CONCAT('CI', (CONVERT( int , (SUBSTRING(@idDocument,3, LEN(@idDocument) ))) + 1))
+				END
+				INSERT INTO dbo.tblRadication VALUES (@Type, (SELECT Id FROM dbo.tblPerson WHERE IdNumber = @IdSender),
+				(SELECT Id FROM dbo.tblPerson WHERE IdNumber = @idReceiver),@idDocument,(SELECT TOP(1) Id FROM dbo.tblDocuments ORDER BY id desc))
+		
+				SET @result = '1|' + @idDocument
+			END		
+	END TRY  
+	BEGIN CATCH  
+		SET @result = CONCAT(ERROR_LINE() , ' - ' , ERROR_MESSAGE(), ' - ', ERROR_NUMBER())
+	END CATCH
+END

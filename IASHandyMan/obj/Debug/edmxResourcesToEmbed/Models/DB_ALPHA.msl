@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DB_ALPHAModelStoreContainer" CdmEntityContainer="DB_ALPHAEntities">
+    <EntitySetMapping Name="tblDocuments">
+      <EntityTypeMapping TypeName="DB_ALPHAModel.tblDocuments">
+        <MappingFragment StoreEntitySet="tblDocuments">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="realName" ColumnName="realName" />
+          <ScalarProperty Name="fileExt" ColumnName="fileExt" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblLogin">
+      <EntityTypeMapping TypeName="DB_ALPHAModel.tblLogin">
+        <MappingFragment StoreEntitySet="tblLogin">
+          <ScalarProperty Name="userName" ColumnName="userName" />
+          <ScalarProperty Name="pwd" ColumnName="pwd" />
+          <ScalarProperty Name="idPerson" ColumnName="idPerson" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblPerson">
+      <EntityTypeMapping TypeName="DB_ALPHAModel.tblPerson">
+        <MappingFragment StoreEntitySet="tblPerson">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="mail" ColumnName="mail" />
+          <ScalarProperty Name="idRol" ColumnName="idRol" />
+          <ScalarProperty Name="active" ColumnName="active" />
+          <ScalarProperty Name="idNumber" ColumnName="idNumber" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblRadication">
+      <EntityTypeMapping TypeName="DB_ALPHAModel.tblRadication">
+        <MappingFragment StoreEntitySet="tblRadication">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="idSender" ColumnName="idSender" />
+          <ScalarProperty Name="idReceiver" ColumnName="idReceiver" />
+          <ScalarProperty Name="idRadication" ColumnName="idRadication" />
+          <ScalarProperty Name="idDocument" ColumnName="idDocument" />
+          <ScalarProperty Name="dateRadication" ColumnName="dateRadication" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblRoles">
+      <EntityTypeMapping TypeName="DB_ALPHAModel.tblRoles">
+        <MappingFragment StoreEntitySet="tblRoles">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="permisionDescription" ColumnName="permisionDescription" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="SP_GetDocument" FunctionName="DB_ALPHAModel.Store.SP_GetDocument">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="DB_ALPHAModel.SP_GetDocument_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="idRadication" ColumnName="idRadication" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SP_InsertDocument" FunctionName="DB_ALPHAModel.Store.SP_InsertDocument" />
+    <FunctionImportMapping FunctionImportName="SP_InsertPerson" FunctionName="DB_ALPHAModel.Store.SP_InsertPerson" />
+    <FunctionImportMapping FunctionImportName="SP_Login" FunctionName="DB_ALPHAModel.Store.SP_Login" />
+    <FunctionImportMapping FunctionImportName="SP_SenderExist" FunctionName="DB_ALPHAModel.Store.SP_SenderExist">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="DB_ALPHAModel.SP_SenderExist_Result">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SP_GetRoles" FunctionName="DB_ALPHAModel.Store.SP_GetRoles">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="DB_ALPHAModel.SP_GetRoles_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="permisionDescription" ColumnName="permisionDescription" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

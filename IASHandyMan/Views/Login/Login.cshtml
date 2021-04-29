@@ -1,5 +1,5 @@
 ﻿
-@model IASHandyMan.Models.Employee
+@model ALPHA.Models.Request.Employee
 
 @{
     ViewBag.Title = "Login";
@@ -11,8 +11,8 @@
     <div class="jumbotron">
         <h1>Login</h1>
         <br />
-        @Html.TextBoxFor(x => x.Employeeid, new { @class = "form-control", autofocus = "autofocus", placeholder = "Usuario" })
-        @Html.ValidationMessageFor(x => x.Employeeid, null, new { @class = "text-danger" })
+        @Html.TextBoxFor(x => x.user, new { @class = "form-control", autofocus = "autofocus", placeholder = "Usuario" })
+        @Html.ValidationMessageFor(x => x.user, null, new { @class = "text-danger" })
         <br />
         @Html.TextBoxFor(x => x.pass, new { @class = "form-control", autofocus = "autofocus", placeholder = "Contraseña", Type = "password" })
         @Html.ValidationMessageFor(x => x.pass, null, new { @class = "text-danger" })
@@ -21,4 +21,5 @@
             Iniciar sesión
         </button>
     </div>
+    <p>@ViewBag.ErrorMessage</p>
 }

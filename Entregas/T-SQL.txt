@@ -1,0 +1,224 @@
+
+-- --------------------------------------------------
+-- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
+-- --------------------------------------------------
+-- Date Created: 04/29/2021 01:37:11
+-- Generated from EDMX file: F:\MVM\IASHandyMan\Models\DB_ALPHA.edmx
+-- --------------------------------------------------
+
+SET QUOTED_IDENTIFIER OFF;
+GO
+USE [DB_ALPHA];
+GO
+IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
+GO
+
+-- --------------------------------------------------
+-- Dropping existing FOREIGN KEY constraints
+-- --------------------------------------------------
+
+IF OBJECT_ID(N'[dbo].[FK_Login_tblPerson]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[tblLogin] DROP CONSTRAINT [FK_Login_tblPerson];
+GO
+IF OBJECT_ID(N'[dbo].[FK_Person_tblRoles]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[tblPerson] DROP CONSTRAINT [FK_Person_tblRoles];
+GO
+IF OBJECT_ID(N'[dbo].[FK_Receiver]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[tblRadication] DROP CONSTRAINT [FK_Receiver];
+GO
+IF OBJECT_ID(N'[dbo].[FK_Sender]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[tblRadication] DROP CONSTRAINT [FK_Sender];
+GO
+IF OBJECT_ID(N'[dbo].[FK_tblRadication_tblDocuments]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[tblRadication] DROP CONSTRAINT [FK_tblRadication_tblDocuments];
+GO
+
+-- --------------------------------------------------
+-- Dropping existing tables
+-- --------------------------------------------------
+
+IF OBJECT_ID(N'[dbo].[tblDocuments]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[tblDocuments];
+GO
+IF OBJECT_ID(N'[dbo].[tblLogin]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[tblLogin];
+GO
+IF OBJECT_ID(N'[dbo].[tblPerson]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[tblPerson];
+GO
+IF OBJECT_ID(N'[dbo].[tblRadication]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[tblRadication];
+GO
+IF OBJECT_ID(N'[dbo].[tblRoles]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[tblRoles];
+GO
+
+-- --------------------------------------------------
+-- Creating all tables
+-- --------------------------------------------------
+
+-- Creating table 'tblDocuments'
+CREATE TABLE [dbo].[tblDocuments] (
+    [id] int IDENTITY(1,1) NOT NULL,
+    [name] varchar(100)  NULL,
+    [realName] varchar(100)  NULL,
+    [fileExt] varbinary(max)  NULL
+);
+GO
+
+-- Creating table 'tblLogin'
+CREATE TABLE [dbo].[tblLogin] (
+    [userName] nvarchar(50)  NOT NULL,
+    [pwd] nvarchar(50)  NOT NULL,
+    [idPerson] int  NOT NULL
+);
+GO
+
+-- Creating table 'tblPerson'
+CREATE TABLE [dbo].[tblPerson] (
+    [id] int IDENTITY(1,1) NOT NULL,
+    [name] nvarchar(max)  NOT NULL,
+    [lastName] nvarchar(max)  NOT NULL,
+    [mail] nvarchar(50)  NOT NULL,
+    [idRol] int  NOT NULL,
+    [active] bit  NOT NULL,
+    [idNumber] int  NULL
+);
+GO
+
+-- Creating table 'tblRadication'
+CREATE TABLE [dbo].[tblRadication] (
+    [id] int IDENTITY(1,1) NOT NULL,
+    [type] bit  NOT NULL,
+    [idSender] int  NOT NULL,
+    [idReceiver] int  NOT NULL,
+    [idRadication] nvarchar(50)  NOT NULL,
+    [idDocument] int  NOT NULL,
+    [dateRadication] datetime  NULL
+);
+GO
+
+-- Creating table 'tblRoles'
+CREATE TABLE [dbo].[tblRoles] (
+    [id] int IDENTITY(1,1) NOT NULL,
+    [description] varchar(50)  NOT NULL,
+    [permisionDescription] nvarchar(max)  NULL
+);
+GO
+
+-- --------------------------------------------------
+-- Creating all PRIMARY KEY constraints
+-- --------------------------------------------------
+
+-- Creating primary key on [id] in table 'tblDocuments'
+ALTER TABLE [dbo].[tblDocuments]
+ADD CONSTRAINT [PK_tblDocuments]
+    PRIMARY KEY CLUSTERED ([id] ASC);
+GO
+
+-- Creating primary key on [userName] in table 'tblLogin'
+ALTER TABLE [dbo].[tblLogin]
+ADD CONSTRAINT [PK_tblLogin]
+    PRIMARY KEY CLUSTERED ([userName] ASC);
+GO
+
+-- Creating primary key on [id] in table 'tblPerson'
+ALTER TABLE [dbo].[tblPerson]
+ADD CONSTRAINT [PK_tblPerson]
+    PRIMARY KEY CLUSTERED ([id] ASC);
+GO
+
+-- Creating primary key on [id] in table 'tblRadication'
+ALTER TABLE [dbo].[tblRadication]
+ADD CONSTRAINT [PK_tblRadication]
+    PRIMARY KEY CLUSTERED ([id] ASC);
+GO
+
+-- Creating primary key on [id] in table 'tblRoles'
+ALTER TABLE [dbo].[tblRoles]
+ADD CONSTRAINT [PK_tblRoles]
+    PRIMARY KEY CLUSTERED ([id] ASC);
+GO
+
+-- --------------------------------------------------
+-- Creating all FOREIGN KEY constraints
+-- --------------------------------------------------
+
+-- Creating foreign key on [idDocument] in table 'tblRadication'
+ALTER TABLE [dbo].[tblRadication]
+ADD CONSTRAINT [FK_tblRadication_tblDocuments]
+    FOREIGN KEY ([idDocument])
+    REFERENCES [dbo].[tblDocuments]
+        ([id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_tblRadication_tblDocuments'
+CREATE INDEX [IX_FK_tblRadication_tblDocuments]
+ON [dbo].[tblRadication]
+    ([idDocument]);
+GO
+
+-- Creating foreign key on [idPerson] in table 'tblLogin'
+ALTER TABLE [dbo].[tblLogin]
+ADD CONSTRAINT [FK_Login_tblPerson]
+    FOREIGN KEY ([idPerson])
+    REFERENCES [dbo].[tblPerson]
+        ([id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_Login_tblPerson'
+CREATE INDEX [IX_FK_Login_tblPerson]
+ON [dbo].[tblLogin]
+    ([idPerson]);
+GO
+
+-- Creating foreign key on [idRol] in table 'tblPerson'
+ALTER TABLE [dbo].[tblPerson]
+ADD CONSTRAINT [FK_Person_tblRoles]
+    FOREIGN KEY ([idRol])
+    REFERENCES [dbo].[tblRoles]
+        ([id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_Person_tblRoles'
+CREATE INDEX [IX_FK_Person_tblRoles]
+ON [dbo].[tblPerson]
+    ([idRol]);
+GO
+
+-- Creating foreign key on [idReceiver] in table 'tblRadication'
+ALTER TABLE [dbo].[tblRadication]
+ADD CONSTRAINT [FK_Receiver]
+    FOREIGN KEY ([idReceiver])
+    REFERENCES [dbo].[tblPerson]
+        ([id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_Receiver'
+CREATE INDEX [IX_FK_Receiver]
+ON [dbo].[tblRadication]
+    ([idReceiver]);
+GO
+
+-- Creating foreign key on [idSender] in table 'tblRadication'
+ALTER TABLE [dbo].[tblRadication]
+ADD CONSTRAINT [FK_Sender]
+    FOREIGN KEY ([idSender])
+    REFERENCES [dbo].[tblPerson]
+        ([id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_Sender'
+CREATE INDEX [IX_FK_Sender]
+ON [dbo].[tblRadication]
+    ([idSender]);
+GO
+
+-- --------------------------------------------------
+-- Script has ended
+-- --------------------------------------------------
